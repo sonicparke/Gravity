@@ -156,7 +156,6 @@ Gravity.prototype = {
 		}
 
 		
-		
 	},
 	
 	update : function() {

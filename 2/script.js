@@ -96,7 +96,6 @@ Gravity.prototype = {
 			planet.blendMode = PIXI.blendModes.MULTIPLY;
 			
 			this.planets.push( planet );
-
 		}
 		
 	},
@@ -115,7 +114,7 @@ Gravity.prototype = {
 			goals	: this.game.physics.p2.createCollisionGroup()
 		};
 		this.game.physics.p2.updateBoundsCollisionGroup();
-		
+
 	},
 	
 	createBullets : function() {
@@ -141,7 +140,8 @@ Gravity.prototype = {
 			bullet.body.collides([]);
 			bullet.scale.x = bullet.scale.y = 0.5;
 			bullet.blendMode = PIXI.blendModes.ADD;
-		}		
+		}
+
 		
 	},
 	
@@ -172,7 +172,8 @@ Gravity.prototype = {
 			this.fireTheta += Math.PI / 1000;
 
             // Play the Music
-            this.music(this.fireTheta);
+            this.musicMaker = this.h * Math.cos( this.fireTheta );
+            this.music(this.musicMaker);
 
 		}
 		
@@ -196,6 +197,8 @@ Gravity.prototype = {
 			planet.y = planet.r * Math.sin( planet.theta ) + this.game.height / 2;
 
 		}, this);
+
+
 		
 	},
 	
@@ -295,12 +298,33 @@ Gravity.prototype = {
 	},
 
     music: function(data) {
+        // irrational number calculator
+        var e = function ( iterations ) {
+            iterations = iterations * 50; // Gotta get the number on the left side of the decimal
+            var aggregator = 1
+            for( var i=1; i < iterations; i++ ) {
+                var value=1;
+                for( var j=2; j <= i; j++ ) {
+                    value *= 1 / j
+                }
+                aggregator += value
+            }
+            return aggregator
+        }
+        e(data);
 
-        var notes = [ "C#", "D#", "F#", "D#"];
-        var note = notes[Math.floor(Math.random() * data)];
-        var octave = Math.floor(Math.random() * 10);
+        var release = 500;
+        tones.attack = 40;
+        tones.release = release;
+        tones.type = "sine";
+        //var notes = [ "C#", "D#", "F#", "D#"];
+        //var notes = [ "D", "E", "F#", "A", "B", "D"]; // Pentatonic D Major
+        //var notes = [ "Bb", "C", "D", "F", "G", "Bb"]; // B-flat major Pentatonic
+        //var notes = [ "B", "C#", "D", "E", "F#", "G", "A", "B"]; // B harmonic minor
+        var notes = [ "E", "F#", "G", "A", "B", "C#", "D", "E"]; // E dorian mode
+        var note = notes[Math.floor(Math.random() * e(data))];
+        var octave = Math.floor(Math.random() * 6);
         tones.play(note, octave);
-
     }
 	
 };
