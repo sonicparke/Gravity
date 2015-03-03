@@ -73,6 +73,7 @@ Gravity.prototype = {
 		this.createPhysics();
 		this.createPlanets();
 		this.createBullets();
+
 		
 	},
 	
@@ -80,7 +81,7 @@ Gravity.prototype = {
 		var planet, i, il, r, theta, random;
 		
 		r = Math.min(this.game.width, this.game.height) * 0.6;
-		
+        
 		for(i=0; i < 4; i++) {
 			planet = this.game.add.sprite(100, 100, 'black-hole');
 			planet.anchor.setTo(0.5, 0.5);
@@ -95,6 +96,7 @@ Gravity.prototype = {
 			planet.blendMode = PIXI.blendModes.MULTIPLY;
 			
 			this.planets.push( planet );
+
 		}
 		
 	},
@@ -168,9 +170,11 @@ Gravity.prototype = {
 			this.h += .01;
 			
 			this.fireTheta += Math.PI / 1000;
-		}
 
-		
+            // Play the Music
+            this.music(this.fireTheta);
+
+		}
 		
 	},
 	
@@ -190,8 +194,7 @@ Gravity.prototype = {
 			
 			planet.x = planet.r * Math.cos( planet.theta ) + this.game.width / 2;
 			planet.y = planet.r * Math.sin( planet.theta ) + this.game.height / 2;
-			
-			
+
 		}, this);
 		
 	},
@@ -265,6 +268,7 @@ Gravity.prototype = {
 				bullet.py = bullet.y;
 			
 				bullet.visible = true;
+
 			}
 		}
 	},
@@ -288,9 +292,19 @@ Gravity.prototype = {
 		} catch( e ) {
 			return false;
 		}
-	}
+	},
+
+    music: function(data) {
+
+        var notes = [ "C#", "D#", "F#", "D#"];
+        var note = notes[Math.floor(Math.random() * data)];
+        var octave = Math.floor(Math.random() * 10);
+        tones.play(note, octave);
+
+    }
 	
 };
+
 
 var gravity;
 
